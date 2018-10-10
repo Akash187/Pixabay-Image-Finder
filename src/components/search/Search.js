@@ -7,7 +7,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import axios from 'axios';
 import ImageResults from '../image-results/ImageResults';
-
+import key from '../../secret';
 
 const styles = {
   container: {
@@ -30,7 +30,7 @@ class Search extends React.Component {
     searchText: '',
     amount: 15,
     apiUrl: 'https://pixabay.com/api',
-    apiKey: process.env.apiKey,
+    apiKey: key.apiKey,
     images: []
   };
 
