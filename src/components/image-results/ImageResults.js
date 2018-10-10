@@ -4,7 +4,12 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
+import ZoomIn from '@material-ui/icons/ZoomIn';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import Button from "@material-ui/core/Button";
+
 
 const styles = theme => ({
   root: {
@@ -20,13 +25,31 @@ const styles = theme => ({
 });
 
 class ImageResults extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClickOpen = this.handleClickOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.state = {
+      open: false,
+      currentImage: ''
+    };
+  }
+
+  handleClickOpen = (imageUrl) => {
+    this.setState({ open: true , currentImage: imageUrl});
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   render() {
     let imageListContent;
     const {images} = this.props;
     if(images){
       imageListContent = (
         <div className={styles.root}>
-          <GridList cellHeight={'auto'} cellWidhth style={{ margin: 0 }} cols={3}>
+          <GridList cellHeight={'auto'} style={{ margin: 0 }} cols={3}>
             {images.map(img => (
               <GridListTile key={img.largeImageURL} style={{height: 300}}>
                 <img src={img.largeImageURL} alt={img.tags}/>
@@ -34,8 +57,8 @@ class ImageResults extends Component {
                   title={img.tags}
                   subtitle={<span>by: <strong>{img.user}</strong></span>}
                   actionIcon={
-                    <IconButton className={styles.icon}>
-                      <InfoIcon />
+                    <IconButton onClick={() => this.handleClickOpen(img.largeImageURL)} className={styles.icon}>
+                      <ZoomIn/>
                     </IconButton>
                   }
                 />
@@ -45,9 +68,30 @@ class ImageResults extends Component {
         </div>
       );
     }
-    return <div>{imageListContent}</div>;
+    return <div>
+      {imageListContent}
+      <AlertDialog open={this.state.open} ImageURL={this.state.currentImage} handleClose={this.handleClose}/>
+    </div>;
   }
 }
+
+let AlertDialog = (props) => {
+  return (
+    <div>
+      <Dialog open={props.open}
+              onClose={props.handleClose}>
+        <DialogContent>
+          <img src={props.ImageURL} style={{width:"100%", height:"100%"}} alt=""/>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleClose} color="primary" autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
 
 ImageResults.propTypes = {
   images: PropTypes.array.isRequired
