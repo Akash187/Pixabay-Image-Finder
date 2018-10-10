@@ -7,7 +7,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import axios from 'axios';
 import ImageResults from '../image-results/ImageResults';
-import key from '../../secret';
+
 
 const styles = {
   container: {
