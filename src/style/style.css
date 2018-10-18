@@ -1,0 +1,17 @@
+.listTile{
+    min-width: 300px;
+    flex-grow: 1;
+}
+
+.listTile img{
+    height: 400px;
+}
+
+.toolbar{
+    justify-content: space-between;
+}
+
+.navLeftSide{
+    display: flex;
+    align-items: center;
+}
