@@ -49,9 +49,9 @@ class ImageResults extends Component {
     if(images){
       imageListContent = (
         <div className={styles.root}>
-          <GridList cellHeight={'auto'} style={{ margin: 0 }} cols={3}>
+          <GridList cellHeight={'auto'} style={{ margin: 0 }} cols={4}>
             {images.map(img => (
-              <GridListTile key={img.largeImageURL} style={{height: 300}}>
+              <GridListTile className={'listTile'} key={img.largeImageURL}>
                 <img src={img.largeImageURL} alt={img.tags}/>
                 <GridListTileBar
                   title={img.tags}

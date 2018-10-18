@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import NavBar from './components/navbar/NavBar';
 import TextFields from './components/search/Search';
+import './firebase/firebase';
+import './style/style.css';
 
 class App extends Component {
   render() {
