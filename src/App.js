@@ -3,6 +3,7 @@ import './App.css';
 import NavBar from './components/navbar/NavBar';
 import TextFields from './components/search/Search';
 import './style/style.css';
+import './firebase/firebase';
 
 class App extends Component {
   render() {
