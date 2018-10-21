@@ -9,6 +9,11 @@ import axios from 'axios';
 import ImageResults from '../image-results/ImageResults';
 import key from '../../secret';
 
+//variables to Manage State Between routes
+let images = [];
+let searchText = '';
+let amount = 15;
+
 const styles = {
   container: {
     display: 'flex',
@@ -27,25 +32,34 @@ const styles = {
 class Search extends React.Component {
 
   state = {
-    searchText: '',
-    amount: 15,
+    searchText: searchText,
+    amount: amount,
     apiUrl: 'https://pixabay.com/api',
     apiKey: key.apiKey,
-    images: []
+    images: images
+  };
+
+  updateDefaultValue = () => {
+    images = this.state.images;
+    searchText = this.state.searchText;
+    amount = this.state.amount;
   };
 
   queryRequest = () => {
     axios.get(`${this.state.apiUrl}/?key=${this.state.apiKey}&q=${this.state.searchText}&image_type=photo&per_page=${this.state.amount}&safesearch=true`)
-      .then(res => this.setState({images: res.data.hits}))
+      .then((res) =>
+        this.setState({images: res.data.hits}, this.updateDefaultValue))
       .catch(err => console.log(err));
   };
 
   onTextChange = (event) => {
     this.setState({searchText: event.target.value}, this.queryRequest);
+    this.updateDefaultValue();
   };
 
   onAmountChange = (event) => {
     this.setState({ amount: event.target.value }, this.queryRequest);
+    this.updateDefaultValue();
   };
 
   render(){
@@ -59,6 +73,7 @@ class Search extends React.Component {
             id="standard-name"
             label="Search For Images"
             className={classes.textField}
+            value={this.state.searchText}
             onChange={this.onTextChange}
             margin="normal"
             fullWidth={true}
