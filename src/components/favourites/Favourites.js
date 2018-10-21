@@ -1,10 +1,49 @@
 import React, { Component } from 'react';
 import ImageResults from '../image-results/ImageResults';
+import database from "../../firebase/firebase";
 
 class Favourites extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      images: []
+    };
+    this.handleRemoveFavourite =this.handleRemoveFavourite.bind(this);
+  }
+
+  handleRemoveFavourite = (id) => {
+    database.ref(`favourites/${id}`).remove()
+      .then(function() {
+        console.log("Remove succeeded.")
+      })
+      .catch(function(error) {
+        console.log("Remove failed: " + error.message)
+      });
+  };
+
+  componentDidMount(){
+    database.ref('favourites')
+      .on('value', (snapshot) => {
+        const favourites = [];
+        snapshot.forEach((childSnapshot) => {
+          favourites.push({
+            id: childSnapshot.key,
+            largeImageURL: childSnapshot.val().url,
+            ...childSnapshot.val()
+          })
+        });
+        console.log(favourites);
+        this.setState({images: favourites});
+      });
+  }
+
   render() {
     return (
-      <ImageResults images={images}/>
+      <div>
+        <h1 style={{marginLeft: '10px'}}>FAVOURITES</h1>
+        <ImageResults images={this.state.images} position={'favouritesPage'} handleRemoveFavourite = {this.handleRemoveFavourite}/>
+      </div>
     );
   }
 }

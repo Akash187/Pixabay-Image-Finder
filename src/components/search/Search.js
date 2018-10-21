@@ -8,6 +8,7 @@ import FormControl from "@material-ui/core/FormControl";
 import axios from 'axios';
 import ImageResults from '../image-results/ImageResults';
 import key from '../../secret';
+import database from "../../firebase/firebase";
 
 //variables to Manage State Between routes
 let images = [];
@@ -95,7 +96,33 @@ class Search extends React.Component {
           </FormControl>
         </div>
         <br/>
-        {this.state.images.length > 0 ? (<ImageResults images={this.state.images}/>) : null}
+        {this.state.images.length > 0 ? (<ShowImages images={this.state.images}/>) : null}
+      </div>
+    );
+  }
+}
+
+class ShowImages extends React.Component{
+
+  constructor(props){
+    super(props);
+    this.handleAddFavourite = this.handleAddFavourite.bind(this);
+  }
+
+  handleAddFavourite = (user, tags, url) => {
+    database.ref('favourites').push({
+      user,
+      tags,
+      url
+    }).then((success) => {
+      console.log(`Saved Data ${success}`);
+    });
+  };
+
+  render(){
+    return (
+      <div>
+        <ImageResults images={this.props.images} handleAddFavourite={this.handleAddFavourite} position={'mainPage'}/>
       </div>
     );
   }

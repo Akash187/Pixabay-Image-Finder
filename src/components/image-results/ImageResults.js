@@ -7,9 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faHeart as farFaHeart} from '@fortawesome/free-regular-svg-icons';
-import { faHeart as fasFaHeart} from '@fortawesome/free-solid-svg-icons';
+import { faHeart as fasFaHeart, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import AlertDialog from './AlertDialog';
-library.add(fasFaHeart, farFaHeart);
+library.add(fasFaHeart, farFaHeart, faTrashAlt);
 
 const styles = theme => ({
   root: {
@@ -48,15 +48,26 @@ class ImageResults extends Component {
         <div className={styles.root}>
           <GridList cellHeight={'auto'} style={{ margin: 0 }} cols={4}>
             {images.map(img => (
-              <GridListTile className={'listTile'} key={img.largeImageURL}>
+              <GridListTile className={'listTile'} key={img.id ? img.id : img.largeImageURL}>
                 <img src={img.largeImageURL} alt={img.tags} onClick={() => this.handleClickOpen(img.largeImageURL)}/>
                 <GridListTileBar
                   title={img.tags}
                   subtitle={<span>by: <strong>{img.user}</strong></span>}
                   actionIcon={
-                    <IconButton onClick={() => this.handleClickOpen(img.largeImageURL)}>
-                      <FontAwesomeIcon icon={['far', 'heart']} color="red" size="lg"/>
-                    </IconButton>
+                    this.props.position === 'mainPage' ?
+                      (
+                      <IconButton onClick={
+                        () => this.props.handleAddFavourite(img.user, img.tags , img.largeImageURL)
+                      }>
+                      <FontAwesomeIcon icon={['far', 'heart']} color="red" size="1x"/>
+                    </IconButton>) :
+                      (
+                      <IconButton onClick={
+                        () => this.props.handleRemoveFavourite(img.id)
+                      }>
+                        <FontAwesomeIcon icon="trash-alt" color="brown" size="1x"/>
+                      </IconButton>
+                    )
                   }
                 />
               </GridListTile>
