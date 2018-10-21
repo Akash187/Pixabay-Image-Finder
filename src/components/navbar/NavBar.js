@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from "@material-ui/core/Button";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const styles = {
   root: {
@@ -33,7 +33,12 @@ function NavBar(props) {
               Pixabay Image Finder
             </Typography>
           </div>
-          <Button color="inherit">Favourite</Button>
+          <Button color={'inherit'}>
+            <NavLink to="/favourites" className={'link'}>Favourites</NavLink>
+          </Button>
+          <Button color={'inherit'}>
+            <NavLink to="/" className={'link'}>Back</NavLink>
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

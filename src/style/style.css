@@ -15,3 +15,9 @@
     display: flex;
     align-items: center;
 }
+
+.link{
+    text-decoration: none;
+    color: white;
+    text-underline: none;
+}
