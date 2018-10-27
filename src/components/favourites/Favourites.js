@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ImageResults from '../image-results/ImageResults';
-import database from "../../firebase/firebase";
+//import database from "../../firebase/firebase";
 
 class Favourites extends Component {
 
@@ -13,29 +13,29 @@ class Favourites extends Component {
   }
 
   handleRemoveFavourite = (id) => {
-    database.ref(`favourites/${id}`).remove()
-      .then(function() {
-        console.log("Remove succeeded.")
-      })
-      .catch(function(error) {
-        console.log("Remove failed: " + error.message)
-      });
+    // database.ref(`favourites/${id}`).remove()
+    //   .then(function() {
+    //     console.log("Remove succeeded.")
+    //   })
+    //   .catch(function(error) {
+    //     console.log("Remove failed: " + error.message)
+    //   });
   };
 
   componentDidMount(){
-    database.ref('favourites')
-      .on('value', (snapshot) => {
-        const favourites = [];
-        snapshot.forEach((childSnapshot) => {
-          favourites.push({
-            id: childSnapshot.key,
-            largeImageURL: childSnapshot.val().url,
-            ...childSnapshot.val()
-          })
-        });
-        console.log(favourites);
-        this.setState({images: favourites});
-      });
+    // database.ref('favourites')
+    //   .on('value', (snapshot) => {
+    //     const favourites = [];
+    //     snapshot.forEach((childSnapshot) => {
+    //       favourites.push({
+    //         id: childSnapshot.key,
+    //         largeImageURL: childSnapshot.val().url,
+    //         ...childSnapshot.val()
+    //       })
+    //     });
+    //     console.log(favourites);
+    //     this.setState({images: favourites});
+    //   });
   }
 
   render() {

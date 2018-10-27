@@ -8,7 +8,8 @@ import FormControl from "@material-ui/core/FormControl";
 import axios from 'axios';
 import ImageResults from '../image-results/ImageResults';
 import key from '../../secret';
-import database from "../../firebase/firebase";
+//import database from "../../firebase/firebase";
+import runtimeEnv from '@mars/heroku-js-runtime-env';
 
 //variables to Manage State Between routes
 let images = [];
@@ -30,13 +31,15 @@ const styles = {
   },
 };
 
-class Search extends React.Component {
+const env = runtimeEnv();
+
+  class Search extends React.Component {
 
   state = {
     searchText: searchText,
     amount: amount,
     apiUrl: 'https://pixabay.com/api',
-    apiKey: key.apiKey,
+    apiKey: env.apiKey,
     images: images
   };
 
@@ -64,11 +67,13 @@ class Search extends React.Component {
   };
 
   render(){
+
     console.log(this.state.images);
     const { classes } = this.props;
 
     return (
       <div>
+        <div>Runtime env var example: { env.apiKey }</div>
         <div className={classes.container}>
           <TextField
             id="standard-name"
@@ -110,13 +115,13 @@ class ShowImages extends React.Component{
   }
 
   handleAddFavourite = (user, tags, url) => {
-    database.ref('favourites').push({
-      user,
-      tags,
-      url
-    }).then((success) => {
-      console.log(`Saved Data ${success}`);
-    });
+    // database.ref('favourites').push({
+    //   user,
+    //   tags,
+    //   url
+    // }).then((success) => {
+    //   console.log(`Saved Data ${success}`);
+    // });
   };
 
   render(){

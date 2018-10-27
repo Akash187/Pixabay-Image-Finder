@@ -993,6 +993,11 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
+"@mars/heroku-js-runtime-env@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@mars/heroku-js-runtime-env/-/heroku-js-runtime-env-3.0.2.tgz#e5b8480ed82b54046474a08a139b8d9560af3a28"
+  integrity sha1-5bhIDtgrVARkdKCKE5uNlWCvOig=
+
 "@material-ui/core@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.1.2.tgz#0ba7c510320c41be672792e3f3ab73ab79ff100f"
