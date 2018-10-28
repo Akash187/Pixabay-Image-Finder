@@ -7,8 +7,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import axios from 'axios';
 import ImageResults from '../image-results/ImageResults';
-import key from '../../secret';
-//import database from "../../firebase/firebase";
+import database from "../../firebase/firebase";
 import runtimeEnv from '@mars/heroku-js-runtime-env';
 
 //variables to Manage State Between routes
@@ -39,7 +38,7 @@ const env = runtimeEnv();
     searchText: searchText,
     amount: amount,
     apiUrl: 'https://pixabay.com/api',
-    apiKey: env.apiKey,
+    apiKey: process.env.REACT_APP_PIXABAY_API_KEY,
     images: images
   };
 
@@ -68,12 +67,11 @@ const env = runtimeEnv();
 
   render(){
 
-    console.log(this.state.images);
+    //console.log(this.state.images);
     const { classes } = this.props;
 
     return (
       <div>
-        <div>Runtime env var example: { env.apiKey }</div>
         <div className={classes.container}>
           <TextField
             id="standard-name"
@@ -115,13 +113,13 @@ class ShowImages extends React.Component{
   }
 
   handleAddFavourite = (user, tags, url) => {
-    // database.ref('favourites').push({
-    //   user,
-    //   tags,
-    //   url
-    // }).then((success) => {
-    //   console.log(`Saved Data ${success}`);
-    // });
+    database.ref('favourites').push({
+      user,
+      tags,
+      url
+    }).then((success) => {
+      console.log(`Saved Data ${success}`);
+    });
   };
 
   render(){
