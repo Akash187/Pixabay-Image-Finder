@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 
@@ -15,6 +15,17 @@ firebase.initializeApp(config);
 const database = firebase.database();
 const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
+
+//code to check device is connected to internet or not
+
+// let connectedRef = firebase.database().ref(".info/connected");
+// connectedRef.on("value", function(snap) {
+//   if (snap.val() === true) {
+//     alert("connected");
+//   } else {
+//     alert("not connected");
+//   }
+// });
 
 
 export {

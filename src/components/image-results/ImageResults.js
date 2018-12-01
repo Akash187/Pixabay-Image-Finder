@@ -4,12 +4,14 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faHeart as farFaHeart} from '@fortawesome/free-regular-svg-icons';
-import { faHeart as fasFaHeart, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import {faHeart as fasFaHeart, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import AlertDialog from './AlertDialog';
 import SnackBar from './SnackBar';
+import {MyContext} from '../contextAPI/MyProvider';
+
 library.add(fasFaHeart, farFaHeart, faTrashAlt);
 
 const styles = theme => ({
@@ -23,42 +25,27 @@ const styles = theme => ({
 });
 
 class ImageResults extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClickOpen = this.handleClickOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.state = {
-      open: false,
-      openSnackbar : false,
-      currentImage: '',
-      snackbarMessage: ''
-    };
-  }
 
-  handleClickOpenSnackBar = (msg) => {
-    this.setState({ snackbarMessage: msg, openSnackbar: true});
-  };
-
-  handleCloseSnackBar = () => {
-    console.log('close Snackbar fired');
-    this.setState({ openSnackbar: false });
+  state = {
+    open: false,
+    currentImage: ''
   };
 
   handleClickOpen = (imageUrl) => {
-    this.setState({ open: true , currentImage: imageUrl});
+    this.setState({open: true, currentImage: imageUrl});
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({open: false});
   };
 
   render() {
     let imageListContent;
     const {images} = this.props;
-    if(images){
+    if (images) {
       imageListContent = (
         <div className={styles.root}>
-          <GridList cellHeight={'auto'} style={{ margin: 0 }} cols={4}>
+          <GridList cellHeight={'auto'} style={{margin: 0}} cols={4}>
             {images.map(img => (
               <GridListTile className={'listTile'} key={img.id ? img.id : img.webformatURL}>
                 <img src={img.webformatURL} alt={img.tags} onClick={() => this.handleClickOpen(img.webformatURL)}/>
@@ -68,24 +55,39 @@ class ImageResults extends Component {
                   actionIcon={
                     this.props.position === 'mainPage' ?
                       (
-                      <IconButton onClick={
-                        () => {
-                          this.props.handleAddFavourite(img.user, img.tags , img.id);
-                          this.handleClickOpenSnackBar('Image added to Favourite!')
-                        }
-                      }>
-                      <FontAwesomeIcon icon={['far', 'heart']} color="red" size="1x"/>
-                    </IconButton>) :
+                        <MyContext.Consumer>
+                          {(context) => (
+                            <React.Fragment>
+                              {(context.state.uid !== '') && (
+                                <IconButton onClick={
+                                  () => {
+                                    this.props.handleAddFavourite(context, img.user, img.tags, img.webformatURL);
+                                  }
+                                }>
+                                  <FontAwesomeIcon icon={['far', 'heart']} color="red" size="1x"/>
+                                </IconButton>
+                              )}
+                            </React.Fragment>
+                          )}
+                        </MyContext.Consumer>
+                      ) :
                       (
-                      <IconButton onClick={
-                        () => {
-                          this.props.handleRemoveFavourite(img.id);
-                          this.handleClickOpenSnackBar('Image Removed from Favourite!');
-                        }
-                      }>
-                        <FontAwesomeIcon icon="trash-alt" color="brown" size="1x"/>
-                      </IconButton>
-                    )
+                        <MyContext.Consumer>
+                          {(context) => (
+                            <React.Fragment>
+                              {(context.state.uid !== '') && (
+                                <IconButton onClick={
+                                  () => {
+                                    this.props.handleRemoveFavourite(context, img.id);
+                                  }
+                                }>
+                                  <FontAwesomeIcon icon="trash-alt" color="brown" size="1x"/>
+                                </IconButton>
+                              )}
+                            </React.Fragment>
+                          )}
+                        </MyContext.Consumer>
+                      )
                   }
                 />
               </GridListTile>
@@ -97,7 +99,12 @@ class ImageResults extends Component {
     return <div>
       {imageListContent}
       <AlertDialog open={this.state.open} ImageURL={this.state.currentImage} handleClose={this.handleClose}/>
-      <SnackBar message={this.state.snackbarMessage} open={this.state.openSnackbar} handleClose={this.handleCloseSnackBar}/>
+      <MyContext.Consumer>
+        {(context) => (
+          <SnackBar message={context.state.snackbarMessage} open={context.state.openSnackbar}
+                    handleClose={context.handleCloseSnackBar}/>
+        )}
+      </MyContext.Consumer>
     </div>;
   }
 }

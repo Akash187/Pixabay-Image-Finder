@@ -64,8 +64,7 @@ const styles = {
   };
 
   render(){
-
-    console.log(this.state.images);
+    // console.log(this.state.images);
     const { classes } = this.props;
 
     return (
@@ -105,17 +104,16 @@ const styles = {
 
 class ShowImages extends React.Component{
 
-  handleAddFavourite = (user, tags, id) => {
-    const url = `https://pixabay.com/en/photos/download/${tags.split(",")[0].replace(/(?!\w|\s)./g, '').replace(/\s/g,'')}-${id}_640.jpg`;
-    console.log(url);
-    console.log("Auth : " + JSON.stringify(auth));
+  handleAddFavourite = (context,user, tags, url) => {
     const uid = auth.currentUser.uid;
     database.ref(`/users/${uid}/favourites`).push({
       user,
       tags,
       url
     }).then((success) => {
-      console.log(`Saved Data ${success}`);
+      context.handleClickOpenSnackBar('Image added to Favourite!');
+    }).catch((err) => {
+      context.handleClickOpenSnackBar('Problem adding to Favourite!');
     });
   };
 
