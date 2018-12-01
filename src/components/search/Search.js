@@ -7,8 +7,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import axios from 'axios';
 import ImageResults from '../image-results/ImageResults';
-import database from "../../firebase/firebase";
-import runtimeEnv from '@mars/heroku-js-runtime-env';
+import {database, auth} from "../../firebase/firebase";
 
 //variables to Manage State Between routes
 let images = [];
@@ -22,15 +21,14 @@ const styles = {
   },
   textField: {
     marginLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
+    marginTop: 56
   },
   formControl: {
     margin: 8,
     minWidth: 120,
   },
 };
-
-const env = runtimeEnv();
 
   class Search extends React.Component {
 
@@ -67,7 +65,7 @@ const env = runtimeEnv();
 
   render(){
 
-    //console.log(this.state.images);
+    console.log(this.state.images);
     const { classes } = this.props;
 
     return (
@@ -107,13 +105,12 @@ const env = runtimeEnv();
 
 class ShowImages extends React.Component{
 
-  constructor(props){
-    super(props);
-    this.handleAddFavourite = this.handleAddFavourite.bind(this);
-  }
-
-  handleAddFavourite = (user, tags, url) => {
-    database.ref('favourites').push({
+  handleAddFavourite = (user, tags, id) => {
+    const url = `https://pixabay.com/en/photos/download/${tags.split(",")[0].replace(/(?!\w|\s)./g, '').replace(/\s/g,'')}-${id}_640.jpg`;
+    console.log(url);
+    console.log("Auth : " + JSON.stringify(auth));
+    const uid = auth.currentUser.uid;
+    database.ref(`/users/${uid}/favourites`).push({
       user,
       tags,
       url

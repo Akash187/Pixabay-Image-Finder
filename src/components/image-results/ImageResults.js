@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faHeart as farFaHeart} from '@fortawesome/free-regular-svg-icons';
 import { faHeart as fasFaHeart, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import AlertDialog from './AlertDialog';
+import SnackBar from './SnackBar';
 library.add(fasFaHeart, farFaHeart, faTrashAlt);
 
 const styles = theme => ({
@@ -28,9 +29,20 @@ class ImageResults extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.state = {
       open: false,
-      currentImage: ''
+      openSnackbar : false,
+      currentImage: '',
+      snackbarMessage: ''
     };
   }
+
+  handleClickOpenSnackBar = (msg) => {
+    this.setState({ snackbarMessage: msg, openSnackbar: true});
+  };
+
+  handleCloseSnackBar = () => {
+    console.log('close Snackbar fired');
+    this.setState({ openSnackbar: false });
+  };
 
   handleClickOpen = (imageUrl) => {
     this.setState({ open: true , currentImage: imageUrl});
@@ -48,8 +60,8 @@ class ImageResults extends Component {
         <div className={styles.root}>
           <GridList cellHeight={'auto'} style={{ margin: 0 }} cols={4}>
             {images.map(img => (
-              <GridListTile className={'listTile'} key={img.id ? img.id : img.largeImageURL}>
-                <img src={img.largeImageURL} alt={img.tags} onClick={() => this.handleClickOpen(img.largeImageURL)}/>
+              <GridListTile className={'listTile'} key={img.id ? img.id : img.webformatURL}>
+                <img src={img.webformatURL} alt={img.tags} onClick={() => this.handleClickOpen(img.webformatURL)}/>
                 <GridListTileBar
                   title={img.tags}
                   subtitle={<span>by: <strong>{img.user}</strong></span>}
@@ -57,13 +69,19 @@ class ImageResults extends Component {
                     this.props.position === 'mainPage' ?
                       (
                       <IconButton onClick={
-                        () => this.props.handleAddFavourite(img.user, img.tags , img.largeImageURL)
+                        () => {
+                          this.props.handleAddFavourite(img.user, img.tags , img.id);
+                          this.handleClickOpenSnackBar('Image added to Favourite!')
+                        }
                       }>
                       <FontAwesomeIcon icon={['far', 'heart']} color="red" size="1x"/>
                     </IconButton>) :
                       (
                       <IconButton onClick={
-                        () => this.props.handleRemoveFavourite(img.id)
+                        () => {
+                          this.props.handleRemoveFavourite(img.id);
+                          this.handleClickOpenSnackBar('Image Removed from Favourite!');
+                        }
                       }>
                         <FontAwesomeIcon icon="trash-alt" color="brown" size="1x"/>
                       </IconButton>
@@ -79,6 +97,7 @@ class ImageResults extends Component {
     return <div>
       {imageListContent}
       <AlertDialog open={this.state.open} ImageURL={this.state.currentImage} handleClose={this.handleClose}/>
+      <SnackBar message={this.state.snackbarMessage} open={this.state.openSnackbar} handleClose={this.handleCloseSnackBar}/>
     </div>;
   }
 }

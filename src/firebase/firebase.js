@@ -1,4 +1,6 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase';
+import 'firebase/database';
+import 'firebase/auth';
 
 const config = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -11,8 +13,15 @@ const config = {
 firebase.initializeApp(config);
 
 const database = firebase.database();
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
 
-export default database;
+
+export {
+  database,
+  auth,
+  provider
+};
 
 // database.ref('favourites')
 //   .on('value', (snapshot) => {

@@ -21,3 +21,8 @@
     color: white;
     text-underline: none;
 }
+
+.favorite_header{
+    margin-left: 10px;
+    margin-top: 3rem;
+}

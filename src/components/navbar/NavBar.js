@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from "@material-ui/core/Button";
 import {NavLink} from "react-router-dom";
+import {auth, provider} from '../../firebase/firebase';
 
 const styles = {
   root: {
@@ -19,30 +20,65 @@ const styles = {
   },
 };
 
-function NavBar(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar variant="dense" className={'toolbar'}>
-          <div className={'navLeftSide'}>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit">
-              Pixabay Image Finder
-            </Typography>
-          </div>
-          <Button color={'inherit'}>
-            <NavLink to="/favourites" className={'link'}>Favourites</NavLink>
-          </Button>
-          <Button color={'inherit'}>
-            <NavLink to="/" className={'link'}>Back</NavLink>
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+class NavBar extends React.Component{
+
+  signInUsingGoogle = () => {
+    auth.signInWithPopup(provider).then(function(result) {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      console.log(user);
+      // ...
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+  };
+
+  signOut = () => {
+    auth.signOut().then(function() {
+      // Sign-out successful.
+      console.log("sign out successful!")
+    }).catch(function(error) {
+      // An error happened.
+      console.log(`SignOut Error : ${error}`)
+    });
+  };
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppBar position="fixed">
+          <Toolbar variant="dense" className={'toolbar'}>
+            <div className={'navLeftSide'}>
+              <Typography variant="title" color="inherit">
+                <NavLink to="/" className={'link'}>Pixabay Image Finder</NavLink>
+              </Typography>
+            </div>
+            <div>
+              <Button color={'inherit'}>
+                <NavLink to="/favourites" className={'link'}>Favourites</NavLink>
+              </Button>
+              <Button color={'inherit'} onClick={this.signInUsingGoogle}>
+                Login
+              </Button>
+              <Button color={'inherit'} onClick={this.signOut}>
+                Login Out
+              </Button>
+            </div>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
 }
 
 NavBar.propTypes = {
