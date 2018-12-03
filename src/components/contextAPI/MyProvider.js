@@ -15,37 +15,45 @@ class MyProvider extends Component {
     snackbarMessage: ''
   };
 
+  componentDidMount(){
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        this.setState({
+          name: user.displayName,
+          uid: user.uid,
+          photoURL: user.photoURL,
+          email: user.email
+        });
+        localStorage.setItem("authSecret", JSON.stringify({uid : user.uid}));
+      } else {
+        // No user is signed in.
+        this.setState({
+          name: '',
+          uid: '',
+          photoURL: '',
+          email: ''
+        });
+        localStorage.setItem("authSecret", JSON.stringify({uid : 'null'}));
+        console.log("sign out successful!");
+      }
+    });
+  }
+
   render() {
     return (
       <MyContext.Provider value={{
         state: this.state,
         signInUsingGoogle: async () => {
           try{
-            const result = await auth.signInWithPopup(provider);
-            let user = result.user.providerData[0];
-            this.setState({
-              name: user.displayName,
-              uid: user.uid,
-              photoURL: user.photoURL,
-              email: user.email
-            });
+            await auth.signInWithPopup(provider);
           }catch(error){
-              // Handle Errors here.
-              let errorCode = error.code;
-              let errorMessage = error.message;
-              //console.log(`Sign In Error: ${errorCode} ${errorMessage}`);
+            // Handle Errors here.
           }
         },
         signOut: async () => {
           try{
             await auth.signOut();
-            this.setState({
-              name: '',
-              uid: '',
-              photoURL: '',
-              email: ''
-            });
-            //console.log("sign out successful!")
           }catch(error){
             //console.log(`SignOut Error : ${error}`)
           }

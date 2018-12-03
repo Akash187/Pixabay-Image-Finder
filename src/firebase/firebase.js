@@ -19,7 +19,8 @@ const provider = new firebase.auth.GoogleAuthProvider();
 export {
   database,
   auth,
-  provider
+  provider,
+  firebase
 };
 
 console.log("firebase is running");
