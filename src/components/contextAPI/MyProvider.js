@@ -16,7 +16,7 @@ class MyProvider extends Component {
   };
 
   componentDidMount(){
-    auth.onAuthStateChanged((user) => {
+    this.subscribed = auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
         this.setState({
@@ -35,9 +35,14 @@ class MyProvider extends Component {
           email: ''
         });
         localStorage.setItem("authSecret", JSON.stringify({uid : 'null'}));
-        console.log("sign out successful!");
+        //console.log("sign out successful!");
       }
     });
+  }
+
+  componentWillUnmount(){
+    this.subscribed();
+    //console.log("unsbscribed");
   }
 
   render() {

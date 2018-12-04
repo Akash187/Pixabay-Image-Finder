@@ -23,4 +23,4 @@ export {
   firebase
 };
 
-console.log("firebase is running");
+//console.log("firebase is running");

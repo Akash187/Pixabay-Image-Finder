@@ -27,7 +27,7 @@ class Favourites extends Component {
   };
 
   componentDidMount(){
-    auth.onAuthStateChanged((user) => {
+    this.subscribed = auth.onAuthStateChanged((user) => {
       if (user) {
         const uid = user.uid;
         database.ref(`/users/${uid}/favourites`)
@@ -47,6 +47,11 @@ class Favourites extends Component {
         this.props.history.push('/');
       }
     });
+  }
+
+  componentWillUnmount(){
+    this.subscribed();
+    //console.log("unsbscribed");
   }
 
   render() {

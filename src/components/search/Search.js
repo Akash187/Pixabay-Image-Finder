@@ -7,7 +7,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import axios from 'axios';
 import ImageResults from '../image-results/ImageResults';
-import {database, auth, firebase} from "../../firebase/firebase";
+import {database, auth} from "../../firebase/firebase";
 
 //variables to Manage State Between routes
 let images = [];
@@ -62,10 +62,6 @@ const styles = {
     this.setState({ amount: event.target.value }, this.queryRequest);
     this.updateDefaultValue();
   };
-
-  componentDidMount(){
-    console.log("Firebase : " + JSON.stringify(auth.currentUser));
-  }
 
   render(){
     const { classes } = this.props;
