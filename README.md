@@ -1,33 +1,46 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-##[See Live project](https://pixabay-image-find.herokuapp.com/)
+# Pixabay-Image-Finder
+---
 
-## Available Scripts
+## Project Purpose:
 
-In the project directory, you can run:
+This project was built to practice my ReactJS and Firebase Skill. Project uses Pixabay Image API to fetch image and you can login to favourite images.
 
-### `npm start`
+## Tools and Skills Used
+1. ReactJS
+2. React Router
+3. Material-UI(just for the form)
+4. Responsive and Mobile friendly design(pure css)
+5. Firebase Realtime Database
+6. Firebase Auth
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## How to Load the App
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+You can run a hosted version of the app at [https://pixabay-image-finder.netlify.com/](https://pixabay-image-finder.netlify.com/)
 
-### `npm test`
+The project uses Node.js and the Create-React-App starter. If you do not have Node >= 6.x installed, you can download it here: [Node.js](https://nodejs.org/en/)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](#running-tests) for more information.
+Once Node is installed, navigate to the directory where you want to store the app
 
-### `npm run build`
+```
+git clone https://github.com/Akash187/Pixabay-Image-Finder.git
+npm install
+```
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Create a Firebase App and put the keys and secret in a .env file in the root of project. See the example below.
+```
+REACT_APP_FIREBASE_API_KEY=AIzaSyBjuzodfdsjkKDFfkdk2oJYUX9dEaU
+REACT_APP_FIREBASE_AUTH_DOMAIN=manchester-city-12e45.firebaseapp.com
+REACT_APP_FIREBASE_DATABASE_URL=https://manchester-city-12e45.firebaseio.com
+REACT_APP_FIREBASE_PROJECT_ID=manchester-city-12e45
+REACT_APP_FIREBASE_STORAGE_BUCKET=manchester-city-12e45.appspot.com
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=2412e4546937
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Once all of the dependencies have been installed you can launch the app with
 
-See the section about [deployment](#deployment) for more information.
+```
+npm start
+```
 
-### `npm run eject`
+A new browser window should automatically open displaying the app. If it doesn't, navigate to [http://localhost:3000/](http://localhost:3000/) in your browser
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
